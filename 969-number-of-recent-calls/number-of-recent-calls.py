@@ -1,18 +1,18 @@
+from collections import deque
+
+TIME_WINDOW = 3000
 class RecentCounter:
 
     def __init__(self):
-        self._data = []
+        self._data = deque()
         
 
     def ping(self, t: int) -> int:
-        counter = 0
         self._data.append(t)
-        _range = (self._data[-1]-3000,self._data[-1])
-        for data in self._data:
-            if data >= _range[0] and data<= _range[1]:
-                counter +=1
+        while self._data and self._data[0] < t-TIME_WINDOW:
+            self._data.popleft()
         
-        return counter
+        return len(self._data)
 
         
 
